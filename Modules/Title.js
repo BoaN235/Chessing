@@ -1,7 +1,10 @@
+import { Board } from './Board.js';
+
 export class Title {
     constructor() {
         this.title = "Chess";
         this.titlebuttons = [['Start', this.start_clicked, "loc"]];
+        this.buttonlist = [];
     }
     load() {
         for (const [text, handler, loc] of this.titlebuttons) {
@@ -9,10 +12,15 @@ export class Title {
             button.textContent = text;
             document.body.appendChild(button);
             button.addEventListener('click', handler.bind(this));
+            this.buttonlist.push(button);
         }
 
     }
     start_clicked() {
-        console.log('Start clicked');
+        for (const button of this.buttonlist) {
+            button.remove();
+        }
+        this.buttonlist = [];
+        window.location.href = 'lobby.html';
     }
 }
