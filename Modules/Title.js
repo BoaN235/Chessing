@@ -1,5 +1,3 @@
-import { Board } from './Board.js';
-
 export class Title {
     constructor() {
         this.title = "Chess";

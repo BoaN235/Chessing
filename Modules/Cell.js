@@ -2,18 +2,20 @@ export class Cell {
     constructor(col, row) {
         this.col = col;
         this.row = row;
+        this.cell = document.createElement('div');
     }
     draw() {
-        const cell = document.createElement('div');
-        cell.classList.add('grid-square');
+        this.cell.classList.add('grid-square');
         if ((this.col + this.row) % 2 === 0) {
-            cell.style.setProperty('--cell-color', '#769656');
+            this.cell.style.setProperty('--cell-color', '#769656');
         } else {
-            cell.style.setProperty('--cell-color', '#eeeed2');
+            this.cell.style.setProperty('--cell-color', '#eeeed2');
         }
-        document.querySelector('.grid-container').appendChild(cell);
+        document.querySelector('.grid-container').appendChild(this.cell);
+        this.cell.addEventListener('click', this.onClick.bind(this));
     }
     onClick() {
         console.log(`Cell ${this.col}, ${this.row} clicked`);
+        this.cell.style.setProperty('--cell-color', '#ff6060');
     }
 }
