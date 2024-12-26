@@ -12,5 +12,9 @@
 }
 
 .grid-square:nth-child(even) {
-    background-color: #b58863; /* Dark color */
+    background-color: black;
+}
+
+.grid-square:nth-child(odd) {
+    background-color: white;
 }
