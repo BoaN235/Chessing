@@ -72,7 +72,7 @@ export class Piece {
     }
 
     onCaptureClick(event) {
-        console.log('Capture clicked');
+        console.log("captured")
         //this.cell = event.target;
         //this.draw();
     }
