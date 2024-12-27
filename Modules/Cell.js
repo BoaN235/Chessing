@@ -1,9 +1,13 @@
+
+
 export class Cell {
-    constructor(col, row) {
+    constructor(col, row, board, Piece) {
         this.col = col;
         this.row = row;
         this.cell = document.createElement('div');
         this.color = "#769656";
+        this.board = board;
+        this.Piece = Piece;
     }
     draw() {
         this.cell.classList.add('grid-square');
@@ -15,14 +19,17 @@ export class Cell {
             this.color = "#eeeed2";
         }
         document.querySelector('.grid-container').appendChild(this.cell);
-        this.cell.addEventListener('click', this.onClick.bind(this));
+    }
+    changeColor(color) {
+        this.color = color;
+        this.cell.style.setProperty('--cell-color', color);
     }
     onClick() {
-        console.log(`Cell ${this.col}, ${this.row} clicked`);
         if (this.cell.style.getPropertyValue('--cell-color') === '#ff6060') {
             this.cell.style.setProperty('--cell-color', this.color);
         } else {
             this.cell.style.setProperty('--cell-color', '#ff6060');
         }
+        this.Piece.onclick();
     }
 }
