@@ -14,9 +14,9 @@ export class Pawn extends Piece {
         this.board.grid_list.forEach(cell => 
         {
             if (cell.row === this.cell.row - 1 && cell.col === this.cell.col) {
-                console.log('Pawn moved');
-                moves.push(cell);
-                
+                if (!cell.piece) {
+                    moves.push(cell);
+                }    
             }
 
         });

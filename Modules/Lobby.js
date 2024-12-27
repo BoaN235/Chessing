@@ -3,7 +3,9 @@ export class Lobby {
         this.title = "Lobby";
         this.titlebuttons = [['Start', this.start_clicked, "loc"]];
         this.buttonlist = [];
-        this.games = ['Game 1', 'Game 2', 'Game 3']; // Example game list
+        this.games = []; // Example game list
+        this.creategame = document.getElementById('create-game');
+        this.creategame.addEventListener('click', this.create_game.bind(this));
     }
 
     load() {
@@ -42,8 +44,14 @@ export class Lobby {
         window.location.href = 'Chess.html';
     }
 
+
+
     join_game(game) {
         alert(`Joining ${game}`);
         // Implement game joining logic here
+    }
+    
+    create_game()   {
+
     }
 }

@@ -1,5 +1,3 @@
-
-
 export class Cell {
     constructor(col, row, board) {
         this.col = col;
@@ -7,7 +5,7 @@ export class Cell {
         this.cell = document.createElement('div');
         this.color = "#769656";
         this.board = board;
-        this.piece
+        this.piece = null; // Initialize piece property
         this.notation = `${String.fromCharCode(97 + col)}${8 - row}`;
         this.seen = false;
         this.clicked = false;
@@ -29,14 +27,12 @@ export class Cell {
     changeColor() {
         if (this.capture) {
             this.cell.style.setProperty('--cell-color', '#ff9e70');
-        }
-        if (this.clicked) {
+        } else if (this.clicked) {
             this.cell.style.setProperty('--cell-color', '#ff6060');
-        }
-        if (this.move) {
-            this.cell.style.setProperty('--cell-color', '#ff9e70');
+        } else if (this.move) {
+            this.cell.style.setProperty('--cell-color', '#baca44');
         } else {
-            this.cell.style.setProperty('--cell-color', this.color);
+            this.cell.style.setProperty('--cell-color', this.color); // Reset to original color if no condition is met
         }
     }
 }

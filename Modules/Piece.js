@@ -10,7 +10,10 @@ export class Piece {
         } else {
             this.color = 'black';
         }
-        this.cell.cell.addEventListener('click', this.onClick.bind(this));
+        if (this.player === 'b') {
+            this.cell.cell.addEventListener('click', this.onClick.bind(this));
+        }
+
 
     }
     onClick() {
@@ -27,12 +30,12 @@ export class Piece {
             }
         }   
         if (this.captures) {
-            for (const capture of this.captures) {
-                capture.capture = true;
-                move.cell.addEventListener('click', this.onCaptureClick.bind(this));
+            for (const Capture of this.captures) {
+                Capture.capture = true;
+                Capture.cell.addEventListener('click', this.onCaptureClick.bind(this));
             }
         }
-        if (this.cell.clicked === true) {
+        if (this.cell.clicked) {
             this.cell.clicked = false;
         } else {
             this.cell.clicked = true;
@@ -45,31 +48,31 @@ export class Piece {
         for (const cell of this.moves) {
             console.log(typeof(target_notation), typeof(cell.notation));
             if (cell.notation === target_notation) {
-                this.move(cell);
+                this.Move(cell);
             }
-            this.board.Change_colors();
         }
-        
+        this.board.Change_colors();
     }
 
-    
-
-    move(cell) {
-                        
-        this.cell.clicked = false; //
+    Move(Cell) {
+        this.cell.clicked = false;
         this.board.Change_colors();
-        this.erase(); //
+        this.erase();
         this.cell.cell.removeEventListener('click', this.onClick.bind(this));
         this.cell.piece = null;
-        cell.piece = this;
-        this.cell = cell;
+        Cell.piece = this;
+        this.cell = Cell;
         this.draw();
-        this.cell.cell.addEventListener('click', this.onClick.bind(this));
-        this.moves.forEach(cell => cell.move = false);
+        Cell.cell.addEventListener('click', this.onClick.bind(this));
+        this.moves.forEach(cell => {
+            cell.move = false;
+            cell.cell.removeEventListener('click', this.onMoveClick.bind(this));
+        });
         this.captures.forEach(cell => cell.capture = false);
     }
 
     onCaptureClick(event) {
+        console.log('Capture clicked');
         //this.cell = event.target;
         //this.draw();
     }
