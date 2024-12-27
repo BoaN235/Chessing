@@ -8,6 +8,11 @@ export class Cell {
         this.color = "#769656";
         this.board = board;
         this.piece
+        this.notation = `${String.fromCharCode(97 + col)}${8 - row}`;
+        this.seen = false;
+        this.clicked = false;
+        this.capture = false;
+        this.move = false;
     }
     draw() {
         this.cell.classList.add('grid-square');
@@ -19,17 +24,19 @@ export class Cell {
             this.color = "#eeeed2";
         }
         document.querySelector('.grid-container').appendChild(this.cell);
+        this.cell.style.setProperty('--notation', `'${this.notation}'`);
     }
-    changeColor(color) {
-        this.color = color;
-        this.cell.style.setProperty('--cell-color', color);
-    }
-    onClick() {
-        if (this.cell.style.getPropertyValue('--cell-color') === '#ff6060') {
-            this.cell.style.setProperty('--cell-color', this.color);
-        } else {
+    changeColor() {
+        if (this.capture) {
+            this.cell.style.setProperty('--cell-color', '#ff9e70');
+        }
+        if (this.clicked) {
             this.cell.style.setProperty('--cell-color', '#ff6060');
         }
-        this.piece.onClick();
+        if (this.move) {
+            this.cell.style.setProperty('--cell-color', '#ff9e70');
+        } else {
+            this.cell.style.setProperty('--cell-color', this.color);
+        }
     }
 }

@@ -43,6 +43,12 @@ export class Pawn extends Piece {
         pieceElement.classList.add('piece', 'pawn', this.color);
         this.cell.cell.appendChild(pieceElement);
     }
+    erase() {
+        const pieceElement = this.cell.cell.querySelector('.piece');
+        if (pieceElement) {
+            pieceElement.remove();
+        }
+    }
 }
 export class Rook extends Piece {
     constructor(player, cell, board) {

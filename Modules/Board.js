@@ -24,6 +24,10 @@ export class Board {
         this.placePieces();
     }
 
+    Change_colors() {  
+        this.grid_list.forEach(cell => cell.changeColor());
+    }
+
     placePieces() {
         const pieces = [
             // Pawns
