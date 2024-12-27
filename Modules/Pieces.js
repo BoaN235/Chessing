@@ -10,16 +10,33 @@ export class Pawn extends Piece {
         this.board = board;
     }
     check_moves() {
-        this.board.grid_list.forEach(cell => {
-            if (cell.row === this.cell.row + 1 && cell.col === this.cell.col) {
-                if (cell.piece === null) {
-                    moves.push(cell);
-                }
+        let moves = [];
+        this.board.grid_list.forEach(cell => 
+        {
+            if (cell.row === this.cell.row - 1 && cell.col === this.cell.col) {
+                console.log('Pawn moved');
+                moves.push(cell);
+                
             }
+
         });
         return moves;
     }
     
+    check_captures() {
+        let moves = [];
+        this.board.grid_list.forEach(cell => 
+        {
+            if (cell.row === this.cell.row - 1 && (cell.col === this.cell.col - 1 || cell.col === this.cell.col + 1)) {
+                if (cell.piece && cell.piece.color !== this.color) {
+                moves.push(cell);
+                }
+            }
+
+        });
+        return moves;
+    }
+
     draw() {
         const pieceElement = document.createElement('img');
         pieceElement.src = `/Assets/${this.color}/pawn-${this.color}.svg`;

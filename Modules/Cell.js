@@ -1,13 +1,13 @@
 
 
 export class Cell {
-    constructor(col, row, board, Piece) {
+    constructor(col, row, board) {
         this.col = col;
         this.row = row;
         this.cell = document.createElement('div');
         this.color = "#769656";
         this.board = board;
-        this.Piece = Piece;
+        this.piece
     }
     draw() {
         this.cell.classList.add('grid-square');
@@ -30,6 +30,6 @@ export class Cell {
         } else {
             this.cell.style.setProperty('--cell-color', '#ff6060');
         }
-        this.Piece.onclick();
+        this.piece.onClick();
     }
 }
