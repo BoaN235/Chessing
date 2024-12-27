@@ -1,13 +1,14 @@
-const express = require('express');
+const express = require("express");
+const cors = require("cors");
+
 const app = express();
-const port = 3000;
+app.use(express.json());
+app.use(cors({ origin: true }));
 
-app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/Page Scripts/Html/Index.html');
+app.post("/authenticate", async (req, res) => {
+  const { username } = req.body;
+  return res.json({ username: username, secret: "sha256..." });
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-});
+app.listen(8000);
+console.log("localhost/8000");
