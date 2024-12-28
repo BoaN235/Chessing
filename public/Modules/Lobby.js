@@ -37,22 +37,23 @@ export class Lobby {
     }
 
     populate_game_list() {
-            // Populate game list
-            const gameList = document.getElementById('game-list');
-            gameList.innerHTML = ''; // Clear any existing games
-            for (const game of this.games) {
+        // Populate game list
+        const gameList = document.getElementById('game-list');
+        gameList.innerHTML = ''; // Clear any existing games
+        for (const game of this.games) {
+            if (game.players.length < 2) {
                 const listItem = document.createElement('li');
                 listItem.textContent = `${game.name} (Players: ${game.players.length}/2)`;
                 listItem.addEventListener('click', () => this.select_game(game.id, listItem));
                 gameList.appendChild(listItem);
             }
+        }
     }
 
     async fetchGames() {
         try {
             const response = await fetch('http://localhost:8000/games');
             const data = await response.json();
-            console.log('Fetched games:', data.games);
             this.games = data.games;
         } catch (error) {
             console.error('Error fetching games:', error);
@@ -94,7 +95,7 @@ export class Lobby {
         } catch (error) {
             console.error('Error joining game:', error);
         }
-        window.location.href = 'Page Scripts/Html/Chess.html';
+        window.location.href = '/public/PageScripts/Html/Chess.html';
     }
 
     async join_selected_game() {
