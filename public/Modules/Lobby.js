@@ -7,11 +7,14 @@ export class Lobby {
         this.title = "Lobby";
         this.games = []; // List of games
         this.secret = this.player.secret; // Use this.player.secret
+        this.username = this.player.username; // Use this.player.username
+        
         this.selectedGameId = null; // ID of the selected game
+        
+        
         this.createGameForm = document.getElementById('create-game-form');
         this.createGameForm.addEventListener('submit', this.create_game.bind(this));
         this.game_name = document.getElementById('game-name');
-        this.username = this.player.username; // Use this.player.username
         this.joinButton = document.getElementById('join-selected-game');
         this.joinButton.addEventListener('click', this.join_selected_game.bind(this));
         this.refreshButton = document.getElementById('refresh-game-list');
@@ -76,7 +79,7 @@ export class Lobby {
 
     async join_game(gameId) {
         const username = this.username;
-        const secret = this.secret; // Use this.player.secret
+        const secret = this.player.secret; // Use this.player.secret
         try {
             const response = await fetch('http://localhost:8000/games/join', {
                 method: 'POST',
@@ -86,8 +89,15 @@ export class Lobby {
                 body: JSON.stringify({ username, gameId , secret})
             });
             const game = await response.json();
-            if (game.host.secret === this.secret) {
-                this.player.host = true;
+            if (game.host) {
+                if (game.host.secret === this.player.secret) {
+                    this.player.host = true;
+                }
+            }
+            if (game.client) {
+                if (game.client.secret === this.player.secret) {
+                    this.player.client = true;
+                }
             }
             window.location.href = '/Page Scripts/Html/Chess.html'; // Corrected path
         } catch (error) {
