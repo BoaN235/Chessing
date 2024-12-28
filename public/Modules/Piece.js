@@ -21,9 +21,8 @@ export class Piece {
         this.captures = [];
         this.color = this.player.color;
 
-        if (this.color === 'black') {
-            this.cell.cell.addEventListener('click', this.onClick.bind(this));
-        }
+        this.cell.cell.addEventListener('click', this.onClick.bind(this));
+        
     }
 
     onClick() {
@@ -56,29 +55,39 @@ export class Piece {
         let target_notation = event.target.style.getPropertyValue('--notation').replace(/^'|'$/g, '');
 
         for (const cell of this.moves) {
-            console.log(typeof(target_notation), typeof(cell.notation));
             if (cell.notation === target_notation) {
                 this.Move(cell);
+                break; // Exit the loop once the move is made
             }
         }
         this.board.Change_colors();
     }
 
-    Move(Cell) {
+    Move(targetCell) {
+        // Clear the current cell
         this.cell.clicked = false;
-        this.board.Change_colors();
         this.erase();
         this.cell.cell.removeEventListener('click', this.onClick.bind(this));
         this.cell.piece = null;
-        Cell.piece = this;
-        this.cell = Cell;
+
+        // Move to the target cell
+        targetCell.piece = this;
+        this.cell = targetCell;
         this.draw();
-        Cell.cell.addEventListener('click', this.onClick.bind(this));
+        targetCell.cell.addEventListener('click', this.onClick.bind(this));
+
+        // Reset move and capture states
         this.moves.forEach(cell => {
             cell.move = false;
             cell.cell.removeEventListener('click', this.onMoveClick.bind(this));
         });
-        this.captures.forEach(cell => cell.capture = false);
+        this.captures.forEach(cell => {
+            cell.capture = false;
+            cell.cell.removeEventListener('click', this.onCaptureClick.bind(this));
+        });
+
+        // Update the board colors
+        this.board.Change_colors();
     }
 
     onCaptureClick(event) {

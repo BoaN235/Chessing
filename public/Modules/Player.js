@@ -1,15 +1,15 @@
-export class Colors {
-    static BLACK = 'b';
-    static WHITE = 'w';
-}
+export const COLORS = {
+    WHITE: 'w',
+    BLACK: 'b'
+};
 
 export class Player {
     constructor() {
         if (Player.instance) {
             return Player.instance;
         }
-        this.username = '';
-        this.color = 'b'; // Default color
+        this.username = this.generateRandomUsername();
+        this.color = COLORS.WHITE; // Default color
         Player.instance = this;
     }
 

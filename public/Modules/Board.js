@@ -1,6 +1,11 @@
-import { Player } from './Player.js';
+import { COLORS } from './Player.js';
 import { Cell } from './Cell.js';
 import { Pawn, Rook, Knight, Bishop, Queen, King } from './Pieces.js';
+import  {OpponentPiece} from './OpponentPiece.js';
+import { PTypes } from './Piece.js';
+//import e from 'express';
+
+
 
 export class Board {
     constructor(player) {
@@ -9,6 +14,7 @@ export class Board {
         this.pieces = [];
         this.createGrid();
         this.placePieces();
+        this.op_color = String(this.player.color === COLORS.BLACK ? COLORS.WHITE : COLORS.BLACK); 
     }
 
     createGrid() {
@@ -28,7 +34,7 @@ export class Board {
     }
 
     flipBoard() {
-        if (this.player.color === 'b') {
+        if (this.player.color === COLORS.BLACK) {
             this.grid_list.reverse();
         }
     }
@@ -43,13 +49,13 @@ export class Board {
         this.pieces = [
             // Pawns
             ...Array(8).fill().map((_, col) => {
-                const piece = new Pawn(this.player, this.grid_list[col + 8], this);
-                this.grid_list[col + 8].piece = piece;
+                const piece = new OpponentPiece('pawn', this.grid_list[col + 48], this.op_color, this.player);
+                this.grid_list[col + 48].piece = piece;
                 return piece;
             }),
             ...Array(8).fill().map((_, col) => {
-                const piece = new Pawn(this.player, this.grid_list[col + 48], this);
-                this.grid_list[col + 48].piece = piece;
+                const piece = new Pawn(this.player, this.grid_list[col + 8], this);
+                this.grid_list[col + 8].piece = piece;
                 return piece;
             }),
             
@@ -145,7 +151,7 @@ export class Board {
         ];
 
         // If the board was flipped, flip it back to maintain the correct notation
-        if (this.player.color === 'b') {
+        if (this.player.color === COLORS.BLACK) {
             this.grid_list.reverse();
         }
         this.pieces.forEach(piece => piece.draw());
