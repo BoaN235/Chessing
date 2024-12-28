@@ -100,4 +100,9 @@ export class Piece {
         this.cell = event.target;
         this.erase();
     }
+    draw(pieceElement) {
+        pieceElement.style.width = '100px';
+        pieceElement.style.height = '100px';
+        this.cell.cell.appendChild(pieceElement);
+    }
 }

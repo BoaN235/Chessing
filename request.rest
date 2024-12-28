@@ -1,11 +1,8 @@
 // filepath: /c:/codeingprojects/JavaScript,HTML,CSS/Chessing/request.rest
-POST http://localhost:8000/lobby
+POST http://localhost:8000/games/join
 Content-Type: application/json
 
 {
-  "game": {
-    "id": 1,
-    "name": "Work",
-    "players": ["E"]
-  }
+    "username": "player1",
+    "gameId": 1
 }

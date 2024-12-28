@@ -38,7 +38,7 @@ export class Pawn extends Piece {
         const pieceElement = document.createElement('img');
         pieceElement.src = `/Assets/${this.color}/pawn-${this.color}.svg`;
         pieceElement.classList.add('piece', 'pawn', this.color);
-        this.cell.cell.appendChild(pieceElement);
+        super.draw(pieceElement);
     }
 
     erase() {
@@ -64,7 +64,7 @@ export class Rook extends Piece {
         const pieceElement = document.createElement('img');
         pieceElement.src = `/Assets/${this.color}/rook-${this.color}.svg`;
         pieceElement.classList.add('piece', 'rook', this.color);
-        this.cell.cell.appendChild(pieceElement);
+        super.draw(pieceElement);
     }
 }
 export class Knight extends Piece {
@@ -83,7 +83,7 @@ export class Knight extends Piece {
         const pieceElement = document.createElement('img');
         pieceElement.src = `/Assets/${this.color}/knight-${this.color}.svg`;
         pieceElement.classList.add('piece', 'knight', this.color);
-        this.cell.cell.appendChild(pieceElement);
+        super.draw(pieceElement);
     }
 }
 export class Bishop extends Piece {
@@ -102,7 +102,7 @@ export class Bishop extends Piece {
         const pieceElement = document.createElement('img');
         pieceElement.src = `/Assets/${this.color}/bishop-${this.color}.svg`;
         pieceElement.classList.add('piece', 'bishop', this.color);
-        this.cell.cell.appendChild(pieceElement);
+        super.draw(pieceElement);
     }
 }
 export class Queen extends Piece {
@@ -121,7 +121,7 @@ export class Queen extends Piece {
         const pieceElement = document.createElement('img');
         pieceElement.src = `/Assets/${this.color}/queen-${this.color}.svg`;
         pieceElement.classList.add('piece', 'queen', this.color);
-        this.cell.cell.appendChild(pieceElement);
+        super.draw(pieceElement);
     }
 }
 export class King extends Piece {
@@ -140,6 +140,6 @@ export class King extends Piece {
         const pieceElement = document.createElement('img');
         pieceElement.src = `/Assets/${this.color}/king-${this.color}.svg`;
         pieceElement.classList.add('piece', 'king', this.color);
-        this.cell.cell.appendChild(pieceElement);
+        super.draw(pieceElement);
     }
 }

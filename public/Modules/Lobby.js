@@ -3,9 +3,10 @@ import { Player } from './Player.js';
 export class Lobby {
     constructor() {
         this.player = new Player(); // Correctly instantiate the Player class
-        
+        this.games = {}; // List of games
         this.title = "Lobby";
         this.games = []; // List of games
+        this.secret = this.player.secret; // Use this.player.secret
         this.selectedGameId = null; // ID of the selected game
         this.createGameForm = document.getElementById('create-game-form');
         this.createGameForm.addEventListener('submit', this.create_game.bind(this));
@@ -14,20 +15,20 @@ export class Lobby {
         this.joinButton = document.getElementById('join-selected-game');
         this.joinButton.addEventListener('click', this.join_selected_game.bind(this));
         this.refreshButton = document.getElementById('refresh-game-list');
-        this.refreshButton.addEventListener('click', this.load.bind(this));
+        this.refreshButton.addEventListener('click', this.populate_game_list.bind(this));
     }
 
     async load() {
         // Fetch the list of games from the server
-        await this.fetchGames();
-
         const username = document.getElementById('username');
+        username.value = this.username;
         username.addEventListener('change', () => { this.username = username.value; });
         this.populate_game_list();
     }
 
-    populate_game_list() {
+    async populate_game_list() {
         // Populate game list
+        await this.fetchGames();
         const gameList = document.getElementById('game-list');
         gameList.innerHTML = ''; // Clear any existing games
         for (const game of this.games) {
@@ -53,18 +54,21 @@ export class Lobby {
     async create_game(event) {
         event.preventDefault();
         const gameName = this.game_name.value;
-        const username = this.username;
         try {
             const response = await fetch('http://localhost:8000/lobby', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, gameName })
+                body: JSON.stringify({ gameName })
             });
-            const game = await response.json();
-            this.games.push(game);
-            this.load(); // Reload the game list
+            const result = await response.json();
+            this.game = result.game; // Access the game property
+            this.games.push(this.game);
+            await this.populate_game_list(); // Reload the game list
+    
+            // Join the newly created game
+            await this.join_game(this.game.id);
         } catch (error) {
             console.error('Error creating game:', error);
         }
@@ -72,13 +76,14 @@ export class Lobby {
 
     async join_game(gameId) {
         const username = this.username;
+        const secret = this.secret; // Use this.player.secret
         try {
             const response = await fetch('http://localhost:8000/games/join', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, gameId })
+                body: JSON.stringify({ username, gameId , secret})
             });
             const game = await response.json();
             window.location.href = '/Page Scripts/Html/Chess.html'; // Corrected path

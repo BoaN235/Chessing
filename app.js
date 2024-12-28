@@ -25,14 +25,15 @@ let current_games = [];
 
 // Endpoint to create a new game
 app.post("/lobby", async (req, res) => {
-  const { username, gameName } = req.body;
-  const game = { id: games.length + 1, name: gameName, players: [username] };
+  const { gameName } = req.body;
+  const game = { id: games.length + 1, name: gameName, players: [] };
   games.push(game);
   return res.json({ game });
 });
 
 // Endpoint to get the list of games
 app.get("/games", (req, res) => {
+
   return res.json({ games });
 });
 
@@ -43,10 +44,12 @@ app.get("/startgame", (req, res) => {
 
 // Endpoint to join a game
 app.post("/games/join", (req, res) => {
-  const { username, gameId } = req.body;
+  const { username, gameId, secret } = req.body;
   const game = games.find(g => g.id === gameId);
   if (game) {
-    game.players.push(username);
+    player = { username, secret };
+    game.players.push(player);
+    console.log(game);
     return res.json({ game });
   } else {
     return res.status(404).json({ error: "Game not found" });
