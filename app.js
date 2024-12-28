@@ -26,7 +26,7 @@ let current_games = [];
 // Endpoint to create a new game
 app.post("/lobby", async (req, res) => {
   const { gameName } = req.body;
-  const game = { id: games.length + 1, name: gameName, players: [] };
+  const game = { id: games.length + 1, name: gameName, players: [], host: null };
   games.push(game);
   return res.json({ game });
 });
@@ -48,6 +48,9 @@ app.post("/games/join", (req, res) => {
   const game = games.find(g => g.id === gameId);
   if (game) {
     player = { username, secret };
+    if (game.players.length == 0) {
+      game.host = player;
+    }
     game.players.push(player);
     console.log(game);
     return res.json({ game });
