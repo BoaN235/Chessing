@@ -16,6 +16,8 @@ app.get('/', (req, res) => {
 
 // In-memory list of games
 let games = [];
+let current_games = [];
+
 
 // Endpoint to create a new game
 app.post("/lobby", async (req, res) => {

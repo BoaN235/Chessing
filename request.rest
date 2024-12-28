@@ -3,6 +3,9 @@ POST http://localhost:8000/lobby
 Content-Type: application/json
 
 {
-  "username": "test",
-  "gameName": "testGame"
+  "game": {
+    "id": 1,
+    "name": "Work",
+    "players": ["E"]
+  }
 }

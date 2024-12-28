@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Lobby</title>
+    <title>Lobby</title>
     <link rel="stylesheet" href="../../Misc/Style.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -13,10 +13,14 @@
     </header>
     <main>
         <section id="lobby">
+            <h2>Username</h2>
+            <input id="username" type="text" required>
             <h2>Available Games</h2>
+            <button id="refresh-game-list">Refresh Game List</button>
             <ul id="game-list">
                 <!-- List of available games will be populated here -->
             </ul>
+            <button id="join-selected-game" disabled>Join Selected Game</button>
         </section>
         <section id="create-game">
             <h2>Create a New Game</h2>
@@ -25,6 +29,9 @@
                 <input type="text" id="game-name" name="game-name" required>
                 <button type="submit" id="create-game">Create Game</button>
             </form>
+        </section>
+        <section id="start-game">
+
         </section>
     </main>
     <footer>
