@@ -1,3 +1,17 @@
+import { Player } from './Player.js';
+
+
+export class PTypes {
+    static PAWN = 'pawn';
+    static ROOK = 'rook';
+    static KNIGHT = 'knight';
+    static BISHOP = 'bishop';
+    static QUEEN = 'queen';
+    static KING = 'king';
+
+}
+
+
 export class Piece {
     constructor(player, cell, board) {
         this.player = player;
@@ -5,17 +19,13 @@ export class Piece {
         this.board = board;
         this.moves = [];
         this.captures = [];
-        if (this.player === 'w') {
-            this.color = 'white';
-        } else {
-            this.color = 'black';
-        }
-        if (this.player === 'b') {
+        this.color = this.player.color;
+
+        if (this.color === 'black') {
             this.cell.cell.addEventListener('click', this.onClick.bind(this));
         }
-
-
     }
+
     onClick() {
         this.moves = this.check_moves();
         this.captures = this.check_captures();
@@ -26,13 +36,12 @@ export class Piece {
             for (const move of this.moves) {
                 move.move = true;
                 move.cell.addEventListener('click', this.onMoveClick.bind(this));
-                
             }
         }   
         if (this.captures) {
-            for (const Capture of this.captures) {
-                Capture.capture = true;
-                Capture.cell.addEventListener('click', this.onCaptureClick.bind(this));
+            for (const capture of this.captures) {
+                capture.capture = true;
+                capture.cell.addEventListener('click', this.onCaptureClick.bind(this));
             }
         }
         if (this.cell.clicked) {
@@ -42,6 +51,7 @@ export class Piece {
         }
         this.board.Change_colors();
     }
+
     onMoveClick(event) {
         let target_notation = event.target.style.getPropertyValue('--notation').replace(/^'|'$/g, '');
 
@@ -72,7 +82,7 @@ export class Piece {
     }
 
     onCaptureClick(event) {
-        console.log("captured")
+        console.log("captured");
         //this.cell = event.target;
         //this.draw();
     }

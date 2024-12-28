@@ -1,38 +1,35 @@
-import { Piece } from './Piece.js';
+import { Piece, PTypes } from './Piece.js';
 
 export class Pawn extends Piece {
     constructor(player, cell, board) {
         super(player, cell, board);
         this.piece = Pawn;
         this.type = 'Pawn';
-        this.color = player;
+        this.color = player.color; // Correctly set the color property
         this.cell = cell;
         this.board = board;
     }
+
     check_moves() {
         let moves = [];
-        this.board.grid_list.forEach(cell => 
-        {
+        this.board.grid_list.forEach(cell => {
             if (cell.row === this.cell.row - 1 && cell.col === this.cell.col) {
                 if (!cell.piece) {
                     moves.push(cell);
-                }    
+                }
             }
-
         });
         return moves;
     }
-    
+
     check_captures() {
         let moves = [];
-        this.board.grid_list.forEach(cell => 
-        {
+        this.board.grid_list.forEach(cell => {
             if (cell.row === this.cell.row - 1 && (cell.col === this.cell.col - 1 || cell.col === this.cell.col + 1)) {
                 if (cell.piece && cell.piece.color !== this.color) {
-                moves.push(cell);
+                    moves.push(cell);
                 }
             }
-
         });
         return moves;
     }
@@ -43,6 +40,7 @@ export class Pawn extends Piece {
         pieceElement.classList.add('piece', 'pawn', this.color);
         this.cell.cell.appendChild(pieceElement);
     }
+
     erase() {
         const pieceElement = this.cell.cell.querySelector('.piece');
         if (pieceElement) {
@@ -55,7 +53,7 @@ export class Rook extends Piece {
         super(player, cell, board);
         this.piece = Rook;
         this.type = 'Rook';
-        this.color = player;
+        this.color = player.color; // Correctly set the color property
         this.cell = cell;
         this.board = board;
     }
@@ -74,7 +72,7 @@ export class Knight extends Piece {
         super(player, cell, board);
         this.piece = Knight;
         this.type = 'Knight';
-        this.color = player;
+        this.color = player.color; // Correctly set the color property
         this.cell = cell;
         this.board = board;
     }
@@ -93,7 +91,7 @@ export class Bishop extends Piece {
         super(player, cell, board);
         this.piece = Bishop;
         this.type = 'Bishop';
-        this.color = player;
+        this.color = player.color; // Correctly set the color property
         this.cell = cell;
         this.board = board;
     }
@@ -112,7 +110,7 @@ export class Queen extends Piece {
         super(player, cell, board);
         this.piece = Queen;
         this.type = 'Queen';
-        this.color = player;
+        this.color = player.color; // Correctly set the color property
         this.cell = cell;
         this.board = board;
     }
@@ -131,7 +129,7 @@ export class King extends Piece {
         super(player, cell, board);
         this.piece = King;
         this.type = 'King';
-        this.color = player;
+        this.color = player.color; // Correctly set the color property
         this.cell = cell;
         this.board = board;
     }

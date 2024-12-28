@@ -2,7 +2,7 @@ import { Player } from './Player.js';
 
 export class Lobby {
     constructor() {
-        this.Player = new Player();
+        this.player = new Player(); // Correctly instantiate the Player class
         
         this.title = "Lobby";
         this.games = []; // List of games
@@ -10,15 +10,12 @@ export class Lobby {
         this.createGameForm = document.getElementById('create-game-form');
         this.createGameForm.addEventListener('submit', this.create_game.bind(this));
         this.game_name = document.getElementById('game-name');
-        this.username = player.username
+        this.username = this.player.username; // Use this.player.username
         this.joinButton = document.getElementById('join-selected-game');
         this.joinButton.addEventListener('click', this.join_selected_game.bind(this));
         this.refreshButton = document.getElementById('refresh-game-list');
         this.refreshButton.addEventListener('click', this.load.bind(this));
-        
     }
-
-
 
     async load() {
         // Fetch the list of games from the server
@@ -27,7 +24,6 @@ export class Lobby {
         const username = document.getElementById('username');
         username.addEventListener('change', () => { this.username = username.value; });
         this.populate_game_list();
-
     }
 
     populate_game_list() {
@@ -57,7 +53,7 @@ export class Lobby {
     async create_game(event) {
         event.preventDefault();
         const gameName = this.game_name.value;
-        const username = await this.username;
+        const username = this.username;
         try {
             const response = await fetch('http://localhost:8000/lobby', {
                 method: 'POST',
@@ -75,7 +71,7 @@ export class Lobby {
     }
 
     async join_game(gameId) {
-        const username = await this.username;
+        const username = this.username;
         try {
             const response = await fetch('http://localhost:8000/games/join', {
                 method: 'POST',
@@ -95,7 +91,6 @@ export class Lobby {
         if (this.selectedGameId !== null) {
             await this.join_game(this.selectedGameId);
         }
-
     }
 
     select_game(gameId, listItem) {
@@ -110,5 +105,4 @@ export class Lobby {
         this.selectedGameId = gameId;
         this.joinButton.disabled = false; // Enable the join button
     }
-
 }

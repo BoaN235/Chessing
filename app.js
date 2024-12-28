@@ -1,6 +1,10 @@
+//import { Game } from "./backend/SeverLobby.js";
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+
+
 
 const app = express();
 app.use(express.json());
@@ -47,6 +51,14 @@ app.post("/games/join", (req, res) => {
   } else {
     return res.status(404).json({ error: "Game not found" });
   }
+});
+
+app.post("/games/start", (req, res) => {
+
+});
+
+app.post("/games/move", (req, res) => { 
+
 });
 
 app.listen(8000);

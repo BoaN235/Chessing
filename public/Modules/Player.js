@@ -1,13 +1,17 @@
+export class Colors {
+    static BLACK = 'b';
+    static WHITE = 'w';
+}
+
 export class Player {
     constructor() {
         if (Player.instance) {
             return Player.instance;
         }
         this.username = '';
-        this.color = 'w'; // Default color
+        this.color = 'b'; // Default color
         Player.instance = this;
     }
-
 
     async generateRandomUsername() {
         const randomNumbers = new Uint32Array(10);
@@ -20,5 +24,4 @@ export class Player {
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         return hashHex;
     }
-
 }
