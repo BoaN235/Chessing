@@ -1,12 +1,16 @@
+import { Player } from './Player.js';
+
 export class Lobby {
     constructor() {
+        this.Player = new Player();
+        
         this.title = "Lobby";
         this.games = []; // List of games
         this.selectedGameId = null; // ID of the selected game
         this.createGameForm = document.getElementById('create-game-form');
         this.createGameForm.addEventListener('submit', this.create_game.bind(this));
         this.game_name = document.getElementById('game-name');
-        this.username = this.generateRandomUsername();
+        this.username = player.username
         this.joinButton = document.getElementById('join-selected-game');
         this.joinButton.addEventListener('click', this.join_selected_game.bind(this));
         this.refreshButton = document.getElementById('refresh-game-list');
@@ -14,17 +18,7 @@ export class Lobby {
         
     }
 
-    async generateRandomUsername() {
-        const randomNumbers = new Uint32Array(10);
-        window.crypto.getRandomValues(randomNumbers);
-        const randomString = Array.from(randomNumbers).join('');
-        const encoder = new TextEncoder();
-        const data = encoder.encode(randomString);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        return hashHex;
-    }
+
 
     async load() {
         // Fetch the list of games from the server
@@ -91,11 +85,10 @@ export class Lobby {
                 body: JSON.stringify({ username, gameId })
             });
             const game = await response.json();
-            this.load(); // Reload the game list
+            window.location.href = '/Page Scripts/Html/Chess.html'; // Corrected path
         } catch (error) {
             console.error('Error joining game:', error);
         }
-        window.location.href = '/public/PageScripts/Html/Chess.html';
     }
 
     async join_selected_game() {

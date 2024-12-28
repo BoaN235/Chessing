@@ -32,6 +32,11 @@ app.get("/games", (req, res) => {
   return res.json({ games });
 });
 
+app.get("/startgame", (req, res) => {
+  
+    return res.json({ color });
+});
+
 // Endpoint to join a game
 app.post("/games/join", (req, res) => {
   const { username, gameId } = req.body;
