@@ -17,6 +17,7 @@ export class Player {
         Player.instance = this;
         this.host = false;
         this.client = false;
+        this.gameID = 0;
         this.secret = '';
         for (let i = 0; i < 64; i++) {
             const randomNumber = Math.floor(Math.random() * 10); // Generates a random number between 0 and 9

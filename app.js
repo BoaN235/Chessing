@@ -1,10 +1,7 @@
-//import { Game } from "./backend/SeverLobby.js";
 const { Game } = require("./backend/Game.js");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-
-
 
 const app = express();
 app.use(express.json());
@@ -22,7 +19,6 @@ app.get('/', (req, res) => {
 let games = [];
 let current_games = [];
 
-
 // Endpoint to create a new game
 app.post("/lobby", async (req, res) => {
   const { gameName } = req.body;
@@ -33,50 +29,55 @@ app.post("/lobby", async (req, res) => {
 
 // Endpoint to get the list of games
 app.get("/games", (req, res) => {
-
   return res.json({ games });
 });
-
 
 // Endpoint to join a game
 app.post("/games/join", (req, res) => {
   const { username, gameId, secret } = req.body;
   const game = games.find(g => g.id === gameId);
   if (game) {
-    player = { username, secret };
-    if (game.players.length == 0) {
-      game.host = player;
-    } 
-    if (game.players.length == 1) {
-      game.client = player;
+    if (game.players.length < 2) {
+      const player = { username, secret };
+      if (game.players.length === 0) {
+        game.host = player;
+      } else if (game.players.length === 1) {
+        game.client = player;
+      }
+      game.players.push(player);
+      return res.json({ game });
+    } else {
+      return res.status(404).json({ error: "Game is full" });
     }
-    game.players.push(player);
-    console.log(game);
-    return res.json({ game });
   } else {
     return res.status(404).json({ error: "Game not found" });
   }
 });
 
-app.post("/games/start", (req, res) => {
-  const { secret } = req.body;
-  const gameIndex = games.findIndex(g => g.host && g.host.secret === secret);
-  const randomNumber = Math.floor(Math.random() * 1); // Generates a random number between 0 and 9
-  if (randomNumber = 0) {
-    games[gameIndex].players[0].color = 'w';
-    games[gameIndex].players[1].color = 'b';
-  }
-  if (gameIndex !== -1) {
-      const game = games.splice(gameIndex, 1)[0]; // Remove the game from games array
-      current_games.push(game); // Add the game to current_games array
-      return res.json({ game });
+// Endpoint to check game status
+app.post("/games/status", (req, res) => {
+  const { gameId } = req.body;
+  const game = games.find(g => g.id === gameId); // Use games array instead of current_games
+  if (game) {
+    const ready = game.players.length === 2;
+    return res.json({ ready });
   } else {
-      return res.status(404).json({ error: "Game not found or invalid secret" });
+    return res.status(404).json({ error: "Game not found" });
   }
 });
 
-app.post("/games/move", (req, res) => { 
-
+// Endpoint to start the game
+app.post("/games/start", (req, res) => {
+  const { secret, GameID } = req.body;
+  let game = games.find(g => g.id === GameID);
+  if (game) {
+    game = new Game(game);
+    const color = game.start();
+    current_games.push(game); // Add the game to the current_games array
+    return res.json({ color });
+  } else {
+    return res.status(404).json({ error: "Game not found" });
+  }
 });
 
 app.listen(8000);

@@ -99,6 +99,7 @@ export class Lobby {
                     this.player.client = true;
                 }
             }
+            this.player.gameID = game.gameId;
             window.location.href = '/Page Scripts/Html/Chess.html'; // Corrected path
         } catch (error) {
             console.error('Error joining game:', error);
