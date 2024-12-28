@@ -19,6 +19,6 @@ export class Title {
             button.remove();
         }
         this.buttonlist = [];
-        window.location.href = 'Page Scripts/Html/lobby.html';
+        window.location.href = 'Page Scripts/Html/Lobby.html';
     }
 }

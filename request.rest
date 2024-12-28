@@ -1,0 +1,8 @@
+// filepath: /c:/codeingprojects/JavaScript,HTML,CSS/Chessing/request.rest
+POST http://localhost:8000/lobby
+Content-Type: application/json
+
+{
+  "username": "test",
+  "gameName": "testGame"
+}
