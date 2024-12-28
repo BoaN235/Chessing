@@ -8,7 +8,10 @@ export class Chess {
         this.titlebuttons = [['Start', this.start_clicked, "loc"]];
         this.buttonlist = [];
     }
-    load() {
+    async load() {
+        if (this.player.host) {
+            
+        }
         const board = new Board(this.player);
     }
 }

@@ -86,6 +86,9 @@ export class Lobby {
                 body: JSON.stringify({ username, gameId , secret})
             });
             const game = await response.json();
+            if (game.host.secret === this.secret) {
+                this.player.host = true;
+            }
             window.location.href = '/Page Scripts/Html/Chess.html'; // Corrected path
         } catch (error) {
             console.error('Error joining game:', error);

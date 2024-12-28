@@ -17,6 +17,7 @@ export class Player {
         this.color = COLORS.WHITE; // Default color
         Player.instance = this;
         this.secret = this.generateRandomUsername();
+        this.host = false;
     }
 
     async generateRandomUsername() {
