@@ -1,6 +1,5 @@
 import { Player } from './Player.js';
 
-
 export class PTypes {
     static PAWN = 'pawn';
     static ROOK = 'rook';
@@ -8,9 +7,7 @@ export class PTypes {
     static BISHOP = 'bishop';
     static QUEEN = 'queen';
     static KING = 'king';
-
 }
-
 
 export class Piece {
     constructor(player, cell, board) {
@@ -20,9 +17,9 @@ export class Piece {
         this.moves = [];
         this.captures = [];
         this.color = this.player.color;
+        this.onMove = null; // Callback for move events
 
         this.cell.cell.addEventListener('click', this.onClick.bind(this));
-        
     }
 
     onClick() {
@@ -30,13 +27,13 @@ export class Piece {
         this.captures = this.check_captures();
         console.log(`Piece clicked: ${this.type} at ${this.cell.col}, ${this.cell.row}`);
         console.log(this.moves);
-        
+
         if (this.moves) {
             for (const move of this.moves) {
                 move.move = true;
                 move.cell.addEventListener('click', this.onMoveClick.bind(this));
             }
-        }   
+        }
         if (this.captures) {
             for (const capture of this.captures) {
                 capture.capture = true;
@@ -88,6 +85,11 @@ export class Piece {
 
         // Update the board colors
         this.board.Change_colors();
+
+        // Notify about the move
+        if (this.onMove) {
+            this.onMove({ from: this.cell.notation, to: targetCell.notation });
+        }
     }
 
     onCaptureClick(event) {

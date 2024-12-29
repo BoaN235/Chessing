@@ -1,57 +1,76 @@
-import { Board } from './Board.js';
-import { Player } from './Player.js';
+const { Game } = require("./backend/Game.js");
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const WebSocket = require('ws');
+const { WebSocketServer } = require('./backend/WebSocketServer.js');
 
-export class Chess {
-    constructor() {
-        this.player = new Player(); // Correctly instantiate the Player class
-        this.title = "Chess";
-        this.titlebuttons = [['Start', this.start_clicked, "loc"]];
-        this.buttonlist = [];
-    }
+const app = express();
+app.use(express.json());
+app.use(cors({ origin: true }));
 
-    async load() {
-        try {
-            const response = await fetch('http://localhost:8000/games/start', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ secret: this.player.secret, GameId: this.player.gameID })
-            });
-    
-            const data = await response.json();
-            if (this.player.host) { // Check if the player is the host
-                this.player.color = data.color[0];
-            }
-            if (this.player.client) { // Check if the player is the client
-                this.player.color = data.color[1];
-            }
-            await this.waitForGameReady(); // Wait until both players are ready
-            const board = new Board(this.player); // Initialize the board after both players are ready
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
+// Serve static files from the "public" directory
+app.use(express.static('public'));
 
-    async waitForGameReady() {
-        const interval = setInterval(async () => {
-            try {
-                const response = await fetch('http://localhost:8000/games/status', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ gameId: this.player.gameID }) // Ensure gameId is correctly passed
-                });
-                const data = await response.json();
-                if (data.ready) {
-                    clearInterval(interval);
-                    // Notify the host that the game is ready to start
-                    alert('Both players are ready. The game will start now.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }, 5000); // Poll every 5 seconds
+// Serve index.html at the root URL
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/Page Scripts/Html/Index.html'));
+});
+
+// In-memory list of games
+let games = [];
+let current_games = [];
+
+// Endpoint to create a new game
+app.post("/lobby", async (req, res) => {
+  const { gameName } = req.body;
+  const game = { id: games.length + 1, name: gameName, players: [], host: null, client: null };
+  games.push(game);
+  return res.json({ game });
+});
+
+// Endpoint to get the list of games
+app.get("/games", (req, res) => {
+  return res.json({ games });
+});
+
+app.post("/games/join", (req, res) => {
+  const { username, gameId, secret } = req.body;
+  let game = games.find(g => g.id === gameId);
+  if (game) {
+    const player = { username, secret, color: null };
+    game.players.push(player);
+    if (game.players.length === 1) {
+      game.host = player;
+    } else if (game.players.length === 2) {
+      game.client = player;
     }
-}
+    return res.json({ gameId: game.id, host: game.host, client: game.client });
+  } else {
+    return res.status(404).json({ error: "Game not found" });
+  }
+});
+
+// Start WebSocket server
+const wss = new WebSocketServer({ port: 8080 });
+wss.on('connection', (ws) => {
+  console.log('New client connected');
+
+  ws.on('message', (message) => {
+    console.log(`Received message: ${message}`);
+    // Broadcast the message to all connected clients
+    wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  });
+
+  ws.on('close', () => {
+    console.log('Client disconnected');
+  });
+});
+
+app.listen(8000, () => {
+  console.log('Server is running on http://localhost:8000');
+});
