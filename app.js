@@ -2,7 +2,8 @@ const { Game } = require("./backend/Game.js");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const {WebSocketServer} = require('./backend/WebSocketServer.js'); // Corrected import
+const WebSocket = require('ws');
+const WebSocketServer = require('./backend/WebSocketServer.js');
 
 const app = express();
 app.use(express.json());

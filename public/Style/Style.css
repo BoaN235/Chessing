@@ -15,3 +15,17 @@
     background-color: #d3d3d3; /* Light gray background */
     border: 2px solid #000; /* Black border */
 }
+
+.btn {
+    background-color: #4CAF50; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    font-size: 16px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+}
+
+.btn:hover {
+    transform: translate(-10px);
+    background-color: #45a049;
+}

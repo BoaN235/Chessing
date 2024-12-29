@@ -1,8 +1,17 @@
-import { Title } from '../../Modules/Title.js';
+class TitlePage {
+    constructor() {
+        this.startbutton = document.querySelector("#start-game");
+        if (this.startbutton) {
+            this.startbutton.addEventListener('click', this.start_clicked.bind(this));
+        } else {
+            console.error('Start button not found');
+        }
+    }
 
+    start_clicked() {
+        window.location.href = 'Page Scripts/Html/Lobby.html';
+    }
+}
 
-
-const title = new Title();
-title.load();
-//const title = new Title();
-//title.load();//http://localhost:8000/Page%20Scripts/Html/Index.Html
+// Initialize the TitlePage
+const titlePage = new TitlePage();
