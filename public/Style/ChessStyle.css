@@ -1,0 +1,13 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(8, 0fr);
+    grid-template-rows: repeat(8, 0fr);
+    gap: 0px;
+}
+
+.grid-square {
+    width: 100px;
+    height: 100px;
+    background-color: var(--cell-color);
+    --notation: var(--cell-notation);
+}
