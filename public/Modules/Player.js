@@ -5,6 +5,7 @@ export const COLORS = {
 
 export class Player {
     constructor() {
+
         if (Player.instance) {
             return Player.instance;
         }
@@ -13,8 +14,7 @@ export class Player {
             const randomNumber = Math.floor(Math.random() * 10); // Generates a random number between 0 and 9
             this.username += randomNumber.toString();
         }
-        this.color = COLORS.WHITE; // Default color
-        Player.instance = this;
+        this.color = null; // Default color
         this.host = false;
         this.client = false;
         this.gameID = 0;
@@ -23,6 +23,13 @@ export class Player {
             const randomNumber = Math.floor(Math.random() * 10); // Generates a random number between 0 and 9
             this.secret += randomNumber.toString();
         }
+        Player.instance = this;
     }
 
+    static getInstance() {
+        if (!Player.instance) {
+            Player.instance = new Player();
+        }
+        return Player.instance;
+    }
 }

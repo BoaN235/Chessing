@@ -2,7 +2,7 @@ import { Player } from './Player.js';
 
 export class Lobby {
     constructor() {
-        this.player = new Player(); // Correctly instantiate the Player class
+        this.player = Player.getInstance();
         this.games = {}; // List of games
         this.title = "Lobby";
         this.games = []; // List of games
@@ -10,7 +10,6 @@ export class Lobby {
         this.username = this.player.username; // Use this.player.username
         
         this.selectedGameId = null; // ID of the selected game
-        
         
         this.createGameForm = document.getElementById('create-game-form');
         this.createGameForm.addEventListener('submit', this.create_game.bind(this));
@@ -66,12 +65,9 @@ export class Lobby {
                 body: JSON.stringify({ gameName })
             });
             const result = await response.json();
-            this.game = result.game; // Access the game property
-            this.games.push(this.game);
-            await this.populate_game_list(); // Reload the game list
-    
+            this.game_id = result.id; // Access the game property
             // Join the newly created game
-            await this.join_game(this.game.id);
+            await this.join_game(this.game_id);
         } catch (error) {
             console.error('Error creating game:', error);
         }
@@ -86,9 +82,10 @@ export class Lobby {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, gameId , secret})
+                body: JSON.stringify({ username, gameId, secret })
             });
             const game = await response.json();
+            console.log('Game joined response:', game); // Add logging to check the response
             if (game.host) {
                 if (game.host.secret === this.player.secret) {
                     this.player.host = true;
@@ -100,18 +97,20 @@ export class Lobby {
                 }
             }
             this.player.gameID = game.gameId;
+            console.log('Player gameID set to:', this.player.gameID); // Add logging to check the gameID
             window.location.href = '/Page Scripts/Html/Chess.html'; // Corrected path
         } catch (error) {
             console.error('Error joining game:', error);
         }
     }
-
+    
     async join_selected_game() {
         if (this.selectedGameId !== null) {
+            this.player.gameID = this.selectedGameId;
             await this.join_game(this.selectedGameId);
         }
     }
-
+    
     select_game(gameId, listItem) {
         // Deselect previously selected game
         const previouslySelected = document.querySelector('.selected-game');
