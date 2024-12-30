@@ -2,11 +2,15 @@ const { Game } = require("./backend/Game.js");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const Severscript = require('./backend/RealTimeSever.js');
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
+
 app.use(express.json());
 app.use(cors({ origin: true }));
+
+const io = new Server(server);
 
 // Serve static files from the "public" directory
 app.use(express.static('public'));
@@ -50,46 +54,8 @@ app.post("/games/join", (req, res) => {
   }
 });
 
-// Endpoint to start a game
-app.post("/start", (req, res) => {
-  const { secret, GameId } = req.body;
-  console.log("Start request received with:", { secret, GameId });
-  let game = games.find(g => g.id === GameId);
-  if (game) {
-    game = new Game(game);
-    const color = game.start();
-    current_games.push(game); // Add the game to the current_games array
-
-    // Find the player and include their color in the response
-    const player = game.players.find(p => p.secret === secret);
-    const playerColor = player ? player.color : null;
-
-    return res.json({ color, playerColor });
-  } else {
-    console.log("Game not found for start:", GameId);
-    return res.status(404).json({ error: "Game not found" });
-  }
-});
-
-// Endpoint to check game status
-app.post("/status", (req, res) => {
-  const { gameId } = req.body;
-  console.log("Status request received with:", { gameId });
-  const game = games.find(g => g.id === gameId);
-  if (game) {
-    const ready = game.players.length === 2;
-    return res.json({ ready });
-  } else {
-    console.log("Game not found for status:", gameId);
-    return res.status(404).json({ error: "Game not found" });
-  }
-});
 
 // Create an HTTP server
-const server = require('http').createServer(app);
-
-// Create a WebSocket server
-const wss = new WebSocketServer(server);
 
 // Start the server
 const PORT = process.env.PORT || 8000;
