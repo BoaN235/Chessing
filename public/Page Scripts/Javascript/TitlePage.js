@@ -7,27 +7,33 @@ class TitlePage {
             console.error('Start button not found');
         }
         
-        this.createSquareGrid(100, 100); // Create a 10x10 grid of small squares
+        this.createChessBoard(8, 8); // Create an 8x8 chess board
     }
 
     start_clicked() {
         window.location.href = 'Page Scripts/Html/Lobby.html';
     }
 
-    createSquareGrid(rows, cols) {
-        const container = document.querySelector("#big-square");
-        for (let row = 0; row < rows; row++) {
-            for (let col = 0; col < cols; col++) {
-                const square = document.createElement("div");
-                square.className = "small-square";
-                square.id = `square-${row}-${col}`;
-                container.appendChild(square);
+    createChessBoard(rows, cols) {
+        const containers = document.querySelectorAll(".square");
+        containers.forEach(container => {
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const square = document.createElement("div");
+                    square.className = "small-square";
+                    square.id = `square-${row}-${col}`;
+                    // Alternate colors for chess board pattern
+                    if ((row + col) % 2 === 0) {
+                        square.style.backgroundColor = "#002f3b"; // Dark square
+                    } else {
+                        square.style.backgroundColor = "#36545f"; // Light square
+                    }
+                    container.appendChild(square);
+                }
             }
-        }
+        });
     }
 }
-
-
 
 // Initialize the TitlePage
 const titlePage = new TitlePage();

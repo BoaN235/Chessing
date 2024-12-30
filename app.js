@@ -2,8 +2,7 @@ const { Game } = require("./backend/Game.js");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const WebSocket = require('ws');
-const WebSocketServer = require('./backend/WebSocketServer.js');
+const Severscript = require('./backend/RealTimeSever.js');
 
 const app = express();
 app.use(express.json());
