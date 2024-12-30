@@ -5,13 +5,14 @@ import { OpponentPiece } from './OpponentPiece.js';
 import { PTypes } from './Piece.js';
 
 export class Board {
-    constructor(player) {
+    constructor(player, parent) {
         this.player = player;
         this.grid_list = [];
         this.pieces = [];
         this.createGrid();
         this.placePieces();
-        this.op_color = String(this.player.color === COLORS.BLACK ? COLORS.WHITE : COLORS.BLACK); 
+        this.op_color = String(this.player.color === COLORS.BLACK ? COLORS.WHITE : COLORS.BLACK);
+        this.parent 
     }
 
     createGrid() {
